@@ -14,7 +14,7 @@ function Verify() {
 
             // send update api call
             const response = await fetch(
-                "http://localhost:3001/api/user/account/confirm",
+                "https://anvil-backend-rutl.onrender.com/api/user/account/confirm",
                 {
                     method: "POST",
                     type: "cors",
