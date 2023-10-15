@@ -110,7 +110,7 @@ router.post("/signup", async (req, res) => {
         );
 
         // generate link
-        var link = `http://localhost:3000/confirm?token=${tokenString}`;
+        var link = `https://anvil-frontend.onrender.com/confirm?token=${tokenString}`;
 
         // send email with link
         sendAccountActivationEmail(user.email, link);
@@ -266,7 +266,8 @@ router.post("/password/forgot", async (req, res) => {
         );
 
         const generatedLink =
-            "http://localhost:3000/forgotPassword?token=" + tokenString;
+            "https://anvil-frontend.onrender.com/forgotPassword?token=" +
+            tokenString;
 
         // email this link to user
         sendResetPasswordEmail(user.rows[0].email, generatedLink);
