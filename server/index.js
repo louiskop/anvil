@@ -89,8 +89,7 @@ io.on("connection", (socket) => {
         // send updated note to all editors
         socket.to(noteId).emit("push_update", { noteId, updatedContent });
 
-        // send updated note back to myself
-        socket.emit("push_update", { noteId, updatedContent });
+
 
         // store updated note as latest version
         noteContents[noteId] = updatedContent;
