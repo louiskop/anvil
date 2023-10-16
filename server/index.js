@@ -36,8 +36,6 @@ const io = new Server(server, {
     },
 });
 
-// TODO: extract listeners to own file?
-
 // store all noteId's with currently editing users
 noteRooms = {};
 
@@ -92,7 +90,7 @@ io.on("connection", (socket) => {
         socket.to(noteId).emit("push_update", { noteId, updatedContent });
 
         // send updated note back to myself
-        // socket.emit("push_update", { noteId, updatedContent });
+        socket.emit("push_update", { noteId, updatedContent });
 
         // store updated note as latest version
         noteContents[noteId] = updatedContent;
