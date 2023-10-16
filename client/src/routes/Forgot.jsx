@@ -28,7 +28,7 @@ function Forgot() {
 
         // update password with temp token
         const response = await fetch(
-            "http://localhost:3001/api/user/password/update",
+            "https://anvil-backend-rutl.onrender.com/api/user/password/update",
             {
                 method: "POST",
                 type: "cors",
