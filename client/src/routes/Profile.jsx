@@ -18,17 +18,14 @@ function Profile() {
     const [loading, setLoading] = useState(true);
     useEffect(() => {
         setLoading(true);
-        fetch(
-            "https://anvil-backend-rutl.onrender.com/api/user/profile/details",
-            {
-                method: "GET",
-                mode: "cors",
-                headers: {
-                    "Content-Type": "application/json",
-                    "auth-token": getToken(),
-                },
-            }
-        )
+        fetch("http://localhost:3001/api/user/profile/details", {
+            method: "GET",
+            mode: "cors",
+            headers: {
+                "Content-Type": "application/json",
+                "auth-token": getToken(),
+            },
+        })
             .then((response) => response.json())
             .then((data) => {
                 if (data.message) {
@@ -77,7 +74,7 @@ function Profile() {
 
         try {
             const response = await fetch(
-                "https://anvil-backend-rutl.onrender.com/api/user/profile/update",
+                "http://localhost:3001/api/user/profile/update",
                 {
                     method: "PUT",
                     mode: "cors",
@@ -113,7 +110,7 @@ function Profile() {
         setBtnLoading(true);
         try {
             const response = await fetch(
-                `https://anvil-backend-rutl.onrender.com/api/user/profile/delete/`,
+                `http://localhost:3001/api/user/profile/delete/`,
                 {
                     method: "DELETE",
                     mode: "cors",

@@ -39,18 +39,15 @@ const UserInviteItem = ({
                 shareWith: shareWithUser.username,
             };
 
-            const response = await fetch(
-                "https://anvil-backend-rutl.onrender.com/api/share/",
-                {
-                    method: "POST",
-                    type: "cors",
-                    headers: {
-                        "Content-Type": "application/json",
-                        "auth-token": getToken(),
-                    },
-                    body: JSON.stringify(shareData),
-                }
-            );
+            const response = await fetch("http://localhost:3001/api/share/", {
+                method: "POST",
+                type: "cors",
+                headers: {
+                    "Content-Type": "application/json",
+                    "auth-token": getToken(),
+                },
+                body: JSON.stringify(shareData),
+            });
 
             if (response.ok) {
                 const resData = await response.json();
@@ -88,7 +85,7 @@ const UserInviteItem = ({
             };
 
             const response = await fetch(
-                "https://anvil-backend-rutl.onrender.com/api/share/delete",
+                "http://localhost:3001/api/share/delete",
                 {
                     method: "DELETE",
                     type: "cors",

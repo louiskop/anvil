@@ -67,12 +67,13 @@ function MarkdownEditor({ markupViewStateInput, activeNote, socket }) {
             <div className="w-full h-full flex flex-row gap-5">
                 <div
                     key={key1}
-                    className={`${markupViewStateInput === "markup_view"
-                        ? "flex-grow  pop-in"
-                        : markupViewStateInput === "reader_view"
+                    className={`${
+                        markupViewStateInput === "markup_view"
+                            ? "flex-grow  pop-in"
+                            : markupViewStateInput === "reader_view"
                             ? "hidden"
                             : "pop-in w-1/2"
-                        } h-full bg-base-200 rounded-md p-4`}
+                    } h-full bg-base-200 rounded-md p-4`}
                 >
                     <textarea
                         id="textarea1"
@@ -83,15 +84,16 @@ function MarkdownEditor({ markupViewStateInput, activeNote, socket }) {
                     ></textarea>
                 </div>
                 <div
-                    className={`${markupViewStateInput === "reader_view"
-                        ? "flex-grow  pop-in"
-                        : markupViewStateInput === "markup_view"
+                    className={`${
+                        markupViewStateInput === "reader_view"
+                            ? "flex-grow  pop-in"
+                            : markupViewStateInput === "markup_view"
                             ? "hidden"
-                            : " pop-in w-1/2"
-                        }  h-full bg-neutral rounded-md p-4`}
+                            : "pop-in w-1/2"
+                    } h-full bg-neutral rounded-md p-4`}
                 >
                     <div
-                        className="h-full w-full overflow-auto"
+                        className="h-full w-full bg-red-500 overflow-auto"
                         id="textarea2"
                     ></div>
                 </div>

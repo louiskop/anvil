@@ -29,7 +29,7 @@ import { getToken, clearToken } from "../utils/token";
 import io from "socket.io-client";
 
 // connect to socket on server
-const socket = io.connect("https://anvil-backend-rutl.onrender.com");
+const socket = io.connect("http://localhost:3001");
 
 function Home() {
     let navigate = useNavigate();
@@ -84,7 +84,7 @@ function Home() {
         async function fetchData() {
             // fetch user data
             const response = await fetch(
-                "https://anvil-backend-rutl.onrender.com/api/user/profile/details",
+                "http://localhost:3001/api/user/profile/details",
                 {
                     method: "GET",
                     type: "cors",
@@ -109,6 +109,11 @@ function Home() {
 
     // logout
     const handleLogout = () => {
+        if (activeNote.id) {
+            console.log("HIERDIE MOET ASB RUN");
+            const noteId = activeNote.id;
+            socket.emit("leave_note", { noteId, userDetails });
+        }
         clearToken();
         navigate("/login");
     };
@@ -122,7 +127,7 @@ function Home() {
     const fetchNotes = async () => {
         try {
             const response = await fetch(
-                "https://anvil-backend-rutl.onrender.com/api/note/my/notes",
+                "http://localhost:3001/api/note/my/notes",
                 {
                     method: "GET",
                     type: "cors",
@@ -164,7 +169,7 @@ function Home() {
     const fetchSharedNotes = async () => {
         try {
             const response = await fetch(
-                "https://anvil-backend-rutl.onrender.com/api/share/my/sharedNotes",
+                "http://localhost:3001/api/share/my/sharedNotes",
                 {
                     method: "GET",
                     type: "cors",
@@ -206,7 +211,7 @@ function Home() {
     const fetchCategories = async () => {
         try {
             const response = await fetch(
-                "https://anvil-backend-rutl.onrender.com/api/category/",
+                "http://localhost:3001/api/category/",
                 {
                     method: "GET",
                     type: "cors",
@@ -235,7 +240,7 @@ function Home() {
         try {
             setAddingCategory(true);
             const response = await fetch(
-                "https://anvil-backend-rutl.onrender.com/api/category/add",
+                "http://localhost:3001/api/category/add",
                 {
                     method: "POST",
                     type: "cors",
@@ -275,7 +280,7 @@ function Home() {
 
         try {
             const response = await fetch(
-                "https://anvil-backend-rutl.onrender.com/api/note/create",
+                "http://localhost:3001/api/note/create",
                 {
                     method: "POST",
                     type: "cors",
@@ -438,7 +443,7 @@ function Home() {
             setNotes(newNotes);
 
             const response = await fetch(
-                `https://anvil-backend-rutl.onrender.com/api/note/delete/${file.id}`,
+                `http://localhost:3001/api/note/delete/${file.id}`,
                 {
                     method: "DELETE",
                     type: "cors",
@@ -463,7 +468,7 @@ function Home() {
     const fetchUsersThatIsNotInvited = async (noteId) => {
         try {
             const response = await fetch(
-                `https://anvil-backend-rutl.onrender.com/api/note/notshared/${noteId}`,
+                `http://localhost:3001/api/note/notshared/${noteId}`,
                 {
                     method: "GET",
                     type: "cors",
@@ -489,7 +494,7 @@ function Home() {
     const fetchUsersThatIsInvited = async (noteId) => {
         try {
             const response = await fetch(
-                `https://anvil-backend-rutl.onrender.com/api/note/shared/${noteId}`,
+                `http://localhost:3001/api/note/shared/${noteId}`,
                 {
                     method: "GET",
                     type: "cors",
@@ -524,7 +529,7 @@ function Home() {
             };
 
             const response = await fetch(
-                `https://anvil-backend-rutl.onrender.com/api/share/delete`,
+                `http://localhost:3001/api/share/delete`,
                 {
                     method: "DELETE",
                     type: "cors",

@@ -53,7 +53,7 @@ function Login() {
         // trigger forgot password logic
         if (mode && isForgot) {
             const response = await fetch(
-                "https://anvil-backend-rutl.onrender.com/api/user/password/forgot",
+                "http://localhost:3001/api/user/password/forgot",
                 {
                     method: "POST",
                     type: "cors",
@@ -83,7 +83,7 @@ function Login() {
 
             // login api call
             const response = await fetch(
-                "https://anvil-backend-rutl.onrender.com/api/user/login",
+                "http://localhost:3001/api/user/login",
                 {
                     method: "POST",
                     type: "cors",
@@ -121,7 +121,7 @@ function Login() {
 
             // register api call
             const response = await fetch(
-                "https://anvil-backend-rutl.onrender.com/api/user/signup",
+                "http://localhost:3001/api/user/signup",
                 {
                     method: "POST",
                     type: "cors",
