@@ -32,6 +32,7 @@ router.get("/:id", auth, async (req, res) => {
 
 // DONE: Get my notes
 router.get("/my/notes", auth, async (req, res) => {
+    const filterByCat = req.query.category;
     const id = req.user.id;
     const notes = await getMyNotes(id);
     var sortedNotes = [];
@@ -40,6 +41,14 @@ router.get("/my/notes", auth, async (req, res) => {
             // sort notes
             sortedNotes = notes.rows.sort((a, b) => b - a);
         }
+
+        // filter
+        if (filterByCat) {
+            sortedNotes = sortedNotes.filter((note) => {
+                return note.category == filterByCat;
+            });
+        }
+
         res.status(200).json(sortedNotes);
     } else {
         res.status(404).json({ message: "Note not found" });

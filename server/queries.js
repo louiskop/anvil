@@ -10,6 +10,24 @@ const pool = new Pool({
     },
 });
 
+function sanitizeNames(text) {
+    text = text.replace(/<[^>]*>/g, "");
+    text = text.replace(/'/g, "''");
+    return text;
+}
+
+function sanitizeNotesContent(text) {
+    text = text.replace(/'/g, "''");
+    return text;
+}
+
+function undoSanitizeNotes(text) {
+    if (text.includes("''")) {
+        text = text.replace(/''/g, "'");
+    }
+    return text;
+}
+
 // Users functions
 module.exports.getAllUsers = async () => {
     return await pool.query("SELECT * FROM users");
@@ -26,15 +44,49 @@ module.exports.getOneUserByEmail = async (email) => {
 };
 
 module.exports.createUser = async (user) => {
-    return await pool.query(
-        `INSERT INTO users (username, password, email, avatar, confirmed) VALUES ('${user.username}', '${user.password}', '${user.email}', '${user.avatar}', ${user.confirmed})`
-    );
+    const query = {
+        text: "INSERT INTO users (username, password, email, avatar, confirmed) VALUES ($1, $2, $3, $4, $5)",
+        values: [
+            sanitizeNames(user.username),
+            sanitizeNames(user.password),
+            sanitizeNames(user.email),
+            sanitizeNames(user.avatar),
+            user.confirmed,
+        ],
+    };
+
+    try {
+        const result = await pool.query(query);
+        return result;
+    } catch (error) {
+        throw error;
+    }
 };
 
 module.exports.updateUser = async (user) => {
-    return await pool.query(
-        `UPDATE users SET username='${user.username}' , password='${user.password}', email='${user.email}', avatar='${user.avatar}' WHERE id=${user.id}`
-    );
+    const sanitizedUsername = sanitizeNames(user.username);
+    const sanitizedPassword = sanitizeNames(user.password);
+    const sanitizedEmail = sanitizeNames(user.email);
+    const sanitizedAvatar = sanitizeNames(user.avatar);
+
+    // Use parameterized queries to prevent SQL injection
+    const query = {
+        text: `UPDATE users SET username = $1, password = $2, email = $3, avatar = $4 WHERE id = $5`,
+        values: [
+            sanitizedUsername,
+            sanitizedPassword,
+            sanitizedEmail,
+            sanitizedAvatar,
+            user.id,
+        ],
+    };
+
+    try {
+        const result = await pool.query(query);
+        return result;
+    } catch (error) {
+        throw error;
+    }
 };
 
 //delete user
@@ -67,8 +119,18 @@ module.exports.getMyNotes = async (id) => {
 };
 
 module.exports.createNote = async (note) => {
+    const sanitizedContent = sanitizeNotesContent(note.content);
+
     return await pool.query(
-        `INSERT INTO notes (name, content, category, createdat, updatedat, ownerid) VALUES ('${note.name}', '${note.content}', '${note.category}', '${note.createdat}','${note.updatedat}', ${note.ownerid})`
+        `INSERT INTO notes (name, content, category, createdat, updatedat, ownerid) VALUES ($1, $2, $3, $4, $5, $6)`,
+        [
+            sanitizeNames(note.name),
+            sanitizedContent,
+            sanitizeNames(note.category),
+            note.createdat,
+            note.updatedat,
+            note.ownerid,
+        ]
     );
 };
 
@@ -77,9 +139,26 @@ module.exports.deleteNote = async (id) => {
 };
 
 module.exports.updateNote = async (note) => {
-    return await pool.query(
-        `UPDATE notes SET name='${note.name}', content='${note.content}', category='${note.category}', updatedat='${note.updatedat}' WHERE id=${note.id}`
-    );
+    const sanitizedContent = sanitizeNotesContent(note.content);
+
+    // Use parameterized queries to prevent SQL injection
+    const query = {
+        text: `UPDATE notes SET name = $1, content = $2, category = $3, updatedat = $4 WHERE id = $5`,
+        values: [
+            note.name,
+            sanitizedContent,
+            note.category,
+            note.updatedat,
+            note.id,
+        ],
+    };
+
+    try {
+        const result = await pool.query(query);
+        return result;
+    } catch (error) {
+        throw error;
+    }
 };
 
 // Shared functions
@@ -144,9 +223,11 @@ module.exports.getAllCategories = async () => {
 
 //add categories
 module.exports.createCategory = async (categoryName) => {
+    const sanitizedCategoryName = sanitizeNames(categoryName);
     try {
         var add = await pool.query(
-            `INSERT INTO categories (name) VALUES ('${categoryName}')`
+            `INSERT INTO categories (name) VALUES ($1)`,
+            [sanitizedCategoryName]
         );
     } catch (error) {
         console.log(error);
@@ -162,15 +243,21 @@ module.exports.getNoteContent = async (noteid) => {
 };
 
 module.exports.updateNoteContent = async (noteid, content) => {
-    await pool.query(
-        `UPDATE notes SET content='${content}' WHERE id=${noteid}`
-    );
+    const sanitizedContent = sanitizeNotesContent(content);
+
+    await pool.query(`UPDATE notes SET content=$1 WHERE id=$2`, [
+        sanitizedContent,
+        noteid,
+    ]);
 };
 
 module.exports.updateUserPassword = async (userid, password) => {
-    await pool.query(
-        `UPDATE users SET password='${password}' WHERE id=${userid}`
-    );
+    const sanitizedPassword = sanitizeNames(password);
+
+    await pool.query(`UPDATE users SET password=$1 WHERE id=$2`, [
+        sanitizedPassword,
+        userid,
+    ]);
 };
 
 module.exports.confirmUser = async (userId) => {
