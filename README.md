@@ -2,6 +2,10 @@
 A markdown note taking app with User accounts, note sharing and real-time editing.
 This project was done in collaboration with others for an assignment.
 
+@therealnin3
+@AGiLiTii
+@Migaelvw
+
 ## What I Learned
 - Node js and Express routes and API logic
 - Using websockets on front-and-backend to enable realtime updates
