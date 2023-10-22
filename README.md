@@ -2,9 +2,9 @@
 A markdown note taking app with User accounts, note sharing and real-time editing.
 This project was done in collaboration with others for an assignment.
 
-@therealnin3
-@AGiLiTii
-@Migaelvw
+[@therealnin3](https://www.github.com/therealnin3) <br/>
+[@AGiLiTii](https://www.github.com/AGiLiTii) <br/>
+[@Migaelvw](https://www.github.com/Migaelvw)
 
 ## What I Learned
 - Node js and Express routes and API logic
